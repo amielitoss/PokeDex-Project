@@ -1,6 +1,5 @@
 .section-hero {
   width: 100%;
-
   background: var(--hero-gradient);
 
   transition: background var(--transition-speed) ease;
@@ -109,6 +108,22 @@
   justify-content: center;
 }
 
+.hero-image button {
+  padding: 0;
+  border: 0;
+
+  background: transparent;
+
+  cursor: pointer;
+}
+
+.hero-image button:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 4px;
+
+  border-radius: 12px;
+}
+
 .hero-image img {
   width: min(100%, 440px);
   height: auto;
@@ -122,8 +137,12 @@
     filter var(--transition-speed) ease;
 }
 
-.hero-image img:hover {
+.hero-image button:hover img {
   transform: translateY(-6px) scale(1.02);
+}
+
+.hero-image button:active img {
+  transform: scale(0.98);
 }
 
 /* Tablet */

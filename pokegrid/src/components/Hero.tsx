@@ -12,15 +12,17 @@ function Hero({ pokemon }: HeroProps) {
   function playCry() {
     if (isCrying) {
       return;
-    } else {
-      const cry = new Audio(pokemon.cries.latest);
-      cry.volume = 0.15;
-      setIsCrying(true);
-      cry.play();
-      cry.onended = () => {
-        setIsCrying(false);
-      };
     }
+
+    const cry = new Audio(pokemon.cries.latest);
+    cry.volume = 0.15;
+    setIsCrying(true);
+    cry.onended = () => {
+      setIsCrying(false);
+    };
+    cry.play().catch(() => {
+      setIsCrying(false);
+    });
   }
 
   return (
@@ -42,12 +44,12 @@ function Hero({ pokemon }: HeroProps) {
           </div>
         </div>
         <div className="hero-image">
-          <img
-            src={pokemon.sprites.other["official-artwork"].front_default}
-            alt={pokemon.name}
-            onMouseEnter={playCry}
-            onClick={playCry}
-          />
+          <button type="button" onMouseEnter={playCry} onClick={playCry}>
+            <img
+              src={pokemon.sprites.other["official-artwork"].front_default}
+              alt={pokemon.name}
+            />
+          </button>
         </div>
       </div>
     </section>
