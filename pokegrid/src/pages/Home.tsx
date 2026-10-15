@@ -13,6 +13,7 @@ function Home() {
   const [error, setError] = useState<string | null>(null);
   const [pokemonDetails, setPokemonDetails] = useState<Pokemon[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPokemon, setTotalPokemon] = useState(0);
 
   const offset = (currentPage - 1) * 20;
   const gridRef = useRef<HTMLElement | null>(null);
@@ -29,6 +30,7 @@ function Home() {
         });
         const detailResponses = await Promise.all(detailRequests);
         const details = detailResponses.map((response) => response.data);
+        setTotalPokemon(listData.count);
         setPokemonDetails(details);
         setPokemon(data);
       } catch (error) {
@@ -71,7 +73,7 @@ function Home() {
             <p>Explore the Pokédex</p>
             <h2>All Pokémon</h2>
           </div>
-          <span>{pokemonDetails.length} Pokémon</span>
+          <span>{totalPokemon} Pokémon</span>
         </div>
 
         <div className="pokemon-grid">

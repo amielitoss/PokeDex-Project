@@ -47,4 +47,5 @@ export type PokemonListItem = {
 
 export type PokemonListResponse = {
     results: PokemonListItem[];
+    count: number;
 };
