@@ -16,7 +16,7 @@ function PokemonCard({ pokemon }: PokemonCardProps) {
       </div>
 
       <div className="pokemon-card-content">
-        <span>{pokemon.id}</span>
+        <span>#{pokemon.id}</span>
         <h3>{pokemon.name}</h3>
         <div className="pokemon-card-types">
             {pokemon.types.map((typeInfo) => (
