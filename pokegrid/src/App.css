@@ -1,0 +1,43 @@
+.light {
+  --bg-primary: #f7f7f8;
+  --text-primary: #111827;
+
+  --nav-bg: #ffffff;
+  --nav-text: #111827;
+  --nav-border: rgba(17, 24, 39, 0.08);
+
+  --surface-primary: #ffffff;
+  --surface-secondary: #f1f3f5;
+  --border-primary: rgba(17, 24, 39, 0.1);
+
+  min-height: 100vh;
+
+  background: var(--bg-primary);
+  color: var(--text-primary);
+
+  transition:
+    background-color var(--transition-speed) ease,
+    color var(--transition-speed) ease;
+}
+
+.dark {
+  --bg-primary: #0f1115;
+  --text-primary: #f3f4f6;
+
+  --nav-bg: #0d1117;
+  --nav-text: #f3f4f6;
+  --nav-border: rgba(255, 255, 255, 0.08);
+
+  --surface-primary: #171a21;
+  --surface-secondary: #1d212a;
+  --border-primary: rgba(255, 255, 255, 0.08);
+
+  min-height: 100vh;
+
+  background: var(--bg-primary);
+  color: var(--text-primary);
+
+  transition:
+    background-color var(--transition-speed) ease,
+    color var(--transition-speed) ease;
+}

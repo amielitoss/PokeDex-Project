@@ -1,12 +1,19 @@
-*,
-*::before,
-*::after {
+:root {
+  --transition-speed: 0.3s;
+  --accent-color: #ff304f;
+
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
   box-sizing: border-box;
 }
 
 html {
-  margin: 0;
-  padding: 0;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -17,7 +24,24 @@ body {
 
 button,
 input,
-select,
-textarea {
+textarea,
+select {
   font: inherit;
+}
+
+button {
+  border: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+#root {
+  min-height: 100vh;
 }

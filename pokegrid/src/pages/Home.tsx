@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import pokemonApi from "../services/pokemonApi";
 import type { Pokemon } from "../types/pokemon";
+
 import "./Home.css";
 
 function Home() {
-const [pokemon, setPokemon] = useState<Pokemon | null>(null);
+  const [pokemon, setPokemon] = useState<Pokemon | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,6 +27,7 @@ const [pokemon, setPokemon] = useState<Pokemon | null>(null);
 
   return (
     <>
+
       {pokemon && (
         <div>
           <p>{pokemon.name}</p>

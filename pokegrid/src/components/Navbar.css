@@ -1,0 +1,235 @@
+nav {
+  width: 100%;
+  height: 56px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 2.25rem;
+
+  position: relative;
+  z-index: 100;
+
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--nav-border);
+
+  transition:
+    background-color var(--transition-speed) ease,
+    border-color var(--transition-speed) ease;
+}
+
+/* LOGO */
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.navbar-logo img {
+  width: 120px;
+  height: auto;
+  display: block;
+}
+
+/* LINKS */
+
+.link-container {
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 2rem;
+  margin-left: 3.25rem;
+}
+
+.link-container a {
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+
+  position: relative;
+
+  color: var(--nav-text);
+  text-decoration: none;
+
+  font-size: 0.95rem;
+  font-weight: 600;
+
+  transition:
+    color var(--transition-speed) ease,
+    opacity 0.2s ease;
+}
+
+.link-container a:hover {
+  opacity: 0.7;
+}
+
+.link-container a::after {
+  content: "";
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 2px;
+
+  background: var(--accent-color);
+
+  transform: scaleX(0);
+  transform-origin: center;
+
+  transition: transform 0.2s ease;
+}
+
+.link-container a:hover::after,
+.link-container a.active::after {
+  transform: scaleX(1);
+}
+
+/* ACTIONS */
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+
+  margin-left: auto;
+}
+
+.navbar-actions button {
+  width: 40px;
+  height: 40px;
+
+  display: grid;
+  place-items: center;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 50%;
+
+  background: transparent;
+  color: var(--nav-text);
+
+  cursor: pointer;
+
+  transition:
+    background-color var(--transition-speed) ease,
+    color var(--transition-speed) ease,
+    transform 0.2s ease;
+}
+
+.navbar-actions button:hover {
+  background: rgba(127, 127, 127, 0.12);
+}
+
+.navbar-actions button:active {
+  transform: scale(0.95);
+}
+
+.link-container a:focus-visible,
+.navbar-actions button:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 3px;
+}
+
+/* Hamburger hidden on desktop */
+
+.navbar-actions .menu-toggle {
+  display: none;
+}
+
+/* =========================
+   MOBILE
+   ========================= */
+
+@media (max-width: 768px) {
+  nav {
+    height: 56px;
+    padding: 0 1rem;
+  }
+
+  .navbar-logo img {
+    width: 110px;
+  }
+
+  .navbar-actions {
+    gap: 0.15rem;
+  }
+
+  .navbar-actions .menu-toggle {
+    display: grid;
+  }
+
+  .link-container {
+    position: fixed;
+
+    top: 56px;
+    left: 0;
+
+    width: 100%;
+    height: calc(100dvh - 56px);
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    gap: 0;
+    margin: 0;
+    padding: 1rem;
+
+    background: var(--nav-bg);
+    border-top: 1px solid var(--nav-border);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transform: translateY(-10px);
+
+    transition:
+      opacity var(--transition-speed) ease,
+      transform var(--transition-speed) ease,
+      visibility var(--transition-speed) ease,
+      background-color var(--transition-speed) ease;
+
+    z-index: 99;
+  }
+
+  .link-container.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    transform: translateY(0);
+  }
+
+  .link-container a {
+    width: 100%;
+    height: auto;
+
+    padding: 1rem 0.75rem;
+
+    font-size: 1rem;
+  }
+
+  .link-container a::after {
+    left: 0.75rem;
+    right: auto;
+    bottom: 0.4rem;
+
+    width: 32px;
+
+    transform-origin: left;
+  }
+
+  .theme-toggle,
+  .menu-toggle {
+    width: 40px;
+    height: 40px;
+  }
+}
