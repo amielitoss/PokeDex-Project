@@ -32,30 +32,35 @@ function Navbar({ darkMode, toggleTheme }: NavbarProps) {
         <NavLink
           to="/"
           end
+          onClick={() => setMenuOpen(false)}
           className={({ isActive }) => (isActive ? "active" : "")}
         >
           Pokémon
         </NavLink>
         <NavLink
           to="/moves"
+          onClick={() => setMenuOpen(false)}
           className={({ isActive }) => (isActive ? "active" : "")}
         >
           Moves
         </NavLink>
         <NavLink
           to="/abilities"
+          onClick={() => setMenuOpen(false)}
           className={({ isActive }) => (isActive ? "active" : "")}
         >
           Abilities
         </NavLink>
         <NavLink
           to="/types"
+          onClick={() => setMenuOpen(false)}
           className={({ isActive }) => (isActive ? "active" : "")}
         >
           Types
         </NavLink>
         <NavLink
           to="/items"
+          onClick={() => setMenuOpen(false)}
           className={({ isActive }) => (isActive ? "active" : "")}
         >
           Items
