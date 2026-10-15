@@ -7,6 +7,8 @@ import type { Pokemon } from "../types/pokemon";
 import axios from "axios";
 import "./Home.css";
 
+const PAGE_SIZE = 21;
+
 function Home() {
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
   const [loading, setLoading] = useState(false);
@@ -15,7 +17,8 @@ function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPokemon, setTotalPokemon] = useState(0);
 
-  const offset = (currentPage - 1) * 20;
+  const offset = (currentPage - 1) * PAGE_SIZE;
+  const totalPages = Math.ceil(totalPokemon / PAGE_SIZE);
   const gridRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -36,7 +39,7 @@ function Home() {
       setLoading(true);
       setError(null);
       try {
-        const listData = await getPokemonList(offset);
+        const listData = await getPokemonList(offset, PAGE_SIZE);
         const detailRequests = listData.results.map((item) => {
           return axios.get<Pokemon>(item.url);
         });
@@ -103,7 +106,11 @@ function Home() {
             Previous
           </button>
           <p>Page {currentPage}</p>
-          <button type="button" onClick={nextPage}>
+          <button 
+            type="button" 
+            onClick={nextPage}
+            disabled={currentPage === totalPages}
+            >
             Next
           </button>
         </div>
