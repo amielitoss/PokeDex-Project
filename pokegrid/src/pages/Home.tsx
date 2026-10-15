@@ -46,6 +46,14 @@ function Home() {
       )}
 
       <section className="pokemon-grid-section">
+        <div className="pokemon-grid-header">
+          <div>
+            <p>Explore the Pokédex</p>
+            <h2>All Pokémon</h2>
+          </div>
+          <span>{pokemonDetails.length} Pokémon</span>
+        </div>
+        
         <div className="pokemon-grid">
           {pokemonDetails.map((pokemon) => (
             <PokemonCard key={pokemon.id} pokemon={pokemon} />
