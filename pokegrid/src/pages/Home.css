@@ -111,6 +111,65 @@
   opacity: 0.6;
 }
 
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+  margin-top: 2.5rem;
+}
+
+.pagination button {
+  min-width: 100px;
+  padding: 0.7rem 1rem;
+
+  border-radius: 10px;
+  border: 1px solid var(--border-primary);
+
+  background: var(--surface-primary);
+  color: var(--text-primary);
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background-color var(--transition-speed) ease,
+    border-color var(--transition-speed) ease,
+    opacity 0.2s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pagination p {
+  margin: 0;
+
+  color: var(--text-primary);
+
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+@media (max-width: 480px) {
+  .pagination {
+    gap: 0.75rem;
+  }
+
+  .pagination button {
+    min-width: 88px;
+    padding: 0.65rem 0.8rem;
+  }
+}
+
 @media (max-width: 600px) {
   .pokemon-grid-header {
     align-items: flex-start;

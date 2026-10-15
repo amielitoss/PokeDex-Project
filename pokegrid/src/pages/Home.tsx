@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import pokemonApi from "../services/pokemonApi";
 import Hero from "../components/Hero";
 import PokemonCard from "../components/PokemonCard";
@@ -12,6 +12,10 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pokemonDetails, setPokemonDetails] = useState<Pokemon[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const offset = (currentPage - 1) * 20;
+  const gridRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     async function loadPokemon() {
@@ -19,7 +23,7 @@ function Home() {
       setError(null);
       try {
         const data = await pokemonApi();
-        const listData = await getPokemonList();
+        const listData = await getPokemonList(offset);
         const detailRequests = listData.results.map((item) => {
           return axios.get<Pokemon>(item.url);
         });
@@ -35,7 +39,23 @@ function Home() {
       }
     }
     loadPokemon();
-  }, []);
+  }, [offset]);
+
+  function nextPage() {
+    setCurrentPage((prev) => prev + 1);
+    gridRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
+
+  function previousPage() {
+    setCurrentPage((prev) => (prev > 1 ? prev - 1 : 1));
+    gridRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }
 
   return (
     <>
@@ -45,7 +65,7 @@ function Home() {
         </div>
       )}
 
-      <section className="pokemon-grid-section">
+      <section className="pokemon-grid-section" ref={gridRef}>
         <div className="pokemon-grid-header">
           <div>
             <p>Explore the Pokédex</p>
@@ -53,11 +73,25 @@ function Home() {
           </div>
           <span>{pokemonDetails.length} Pokémon</span>
         </div>
-        
+
         <div className="pokemon-grid">
           {pokemonDetails.map((pokemon) => (
             <PokemonCard key={pokemon.id} pokemon={pokemon} />
           ))}
+        </div>
+
+        <div className="pagination">
+          <button
+            type="button"
+            onClick={previousPage}
+            disabled={currentPage === 1}
+          >
+            Previous
+          </button>
+          <p>Page {currentPage}</p>
+          <button type="button" onClick={nextPage}>
+            Next
+          </button>
         </div>
       </section>
 

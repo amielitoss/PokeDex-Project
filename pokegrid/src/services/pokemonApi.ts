@@ -6,8 +6,8 @@ async function pokemonApi(): Promise<Pokemon> {
     return response.data;
 }
 
-export async function getPokemonList(): Promise<PokemonListResponse> {
-    const response = await axios.get<PokemonListResponse>("https://pokeapi.co/api/v2/pokemon?limit=20");
+export async function getPokemonList(offset: number): Promise<PokemonListResponse> {
+    const response = await axios.get<PokemonListResponse>(`https://pokeapi.co/api/v2/pokemon?limit=21&offset=${offset}`);
     return response.data;
 }
 
