@@ -10,8 +10,14 @@
   --surface-secondary: #f1f3f5;
   --border-primary: rgba(17, 24, 39, 0.1);
 
-  min-height: 100vh;
+  --hero-gradient: linear-gradient(
+    135deg,
+    rgba(220, 38, 38, 0.18) 0%,
+    rgba(249, 115, 22, 0.22) 50%,
+    rgba(250, 204, 21, 0.18) 100%
+  );
 
+  min-height: 100vh;
   background: var(--bg-primary);
   color: var(--text-primary);
 
@@ -32,8 +38,14 @@
   --surface-secondary: #1d212a;
   --border-primary: rgba(255, 255, 255, 0.08);
 
-  min-height: 100vh;
+  --hero-gradient: linear-gradient(
+    135deg,
+    rgba(127, 29, 29, 0.42) 0%,
+    rgba(154, 52, 18, 0.38) 52%,
+    rgba(113, 63, 18, 0.3) 100%
+  );
 
+  min-height: 100vh;
   background: var(--bg-primary);
   color: var(--text-primary);
 

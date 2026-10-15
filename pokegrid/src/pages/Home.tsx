@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import pokemonApi from "../services/pokemonApi";
+import Hero from "../components/Hero";
 import type { Pokemon } from "../types/pokemon";
 
 import "./Home.css";
@@ -27,14 +28,9 @@ function Home() {
 
   return (
     <>
-
       {pokemon && (
         <div>
-          <p>{pokemon.name}</p>
-          <img
-            src={pokemon.sprites.other["official-artwork"].front_default}
-            alt={pokemon.name}
-          />
+          <Hero pokemon={pokemon} />
         </div>
       )}
 
@@ -45,9 +41,7 @@ function Home() {
         </div>
       )}
 
-      {error && (
-        <p>{error}</p>
-      )}
+      {error && <p>{error}</p>}
     </>
   );
 }

@@ -33,4 +33,8 @@ export type Pokemon = {
       url: string;
     }[];
   };
+  cries: {
+    latest: string;
+    legacy: string;
+  };
 };
