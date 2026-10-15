@@ -19,11 +19,23 @@ function Home() {
   const gridRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
+    async function loadFeaturedPokemon() {
+      try {
+        const data = await pokemonApi();
+        setPokemon(data);
+      } catch (error) {
+        console.error(error);
+        setError("Failed to load Featured Pokémon");
+      }
+    }
+    loadFeaturedPokemon();
+  }, []);
+
+  useEffect(() => {
     async function loadPokemon() {
       setLoading(true);
       setError(null);
       try {
-        const data = await pokemonApi();
         const listData = await getPokemonList(offset);
         const detailRequests = listData.results.map((item) => {
           return axios.get<Pokemon>(item.url);
@@ -32,7 +44,6 @@ function Home() {
         const details = detailResponses.map((response) => response.data);
         setTotalPokemon(listData.count);
         setPokemonDetails(details);
-        setPokemon(data);
       } catch (error) {
         console.error(error);
         setError("Failed to load Pokémon");
@@ -42,6 +53,7 @@ function Home() {
     }
     loadPokemon();
   }, [offset]);
+
 
   function nextPage() {
     setCurrentPage((prev) => prev + 1);
