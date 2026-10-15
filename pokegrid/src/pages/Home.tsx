@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import pokemonApi from "../services/pokemonApi";
 import Hero from "../components/Hero";
+import PokemonCard from "../components/PokemonCard";
+import { getPokemonList } from "../services/pokemonApi";
 import type { Pokemon } from "../types/pokemon";
-
+import axios from "axios";
 import "./Home.css";
 
 function Home() {
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [pokemonDetails, setPokemonDetails] = useState<Pokemon[]>([]);
 
   useEffect(() => {
     async function loadPokemon() {
@@ -16,8 +19,16 @@ function Home() {
       setError(null);
       try {
         const data = await pokemonApi();
+        const listData = await getPokemonList();
+        const detailRequests = listData.results.map((item) => {
+          return axios.get<Pokemon>(item.url);
+        });
+        const detailResponses = await Promise.all(detailRequests);
+        const details = detailResponses.map((response) => response.data);
+        setPokemonDetails(details);
         setPokemon(data);
-      } catch {
+      } catch (error) {
+        console.error(error);
         setError("Failed to load Pokémon");
       } finally {
         setLoading(false);
@@ -33,6 +44,14 @@ function Home() {
           <Hero pokemon={pokemon} />
         </div>
       )}
+
+      <section className="pokemon-grid-section">
+        <div className="pokemon-grid">
+          {pokemonDetails.map((pokemon) => (
+            <PokemonCard key={pokemon.id} pokemon={pokemon} />
+          ))}
+        </div>
+      </section>
 
       {loading && (
         <div className="loading-state">

@@ -44,7 +44,7 @@ function Hero({ pokemon }: HeroProps) {
           </div>
         </div>
         <div className="hero-image">
-          <button type="button" onMouseEnter={playCry} onClick={playCry}>
+          <button type="button" onClick={playCry}>
             <img
               src={pokemon.sprites.other["official-artwork"].front_default}
               alt={pokemon.name}

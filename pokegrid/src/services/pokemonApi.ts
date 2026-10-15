@@ -1,8 +1,13 @@
 import axios from "axios";
-import type { Pokemon } from "../types/pokemon";
+import type { Pokemon, PokemonListResponse } from "../types/pokemon";
 
 async function pokemonApi(): Promise<Pokemon> {
     const response = await axios.get<Pokemon>("https://pokeapi.co/api/v2/pokemon/6");
+    return response.data;
+}
+
+export async function getPokemonList(): Promise<PokemonListResponse> {
+    const response = await axios.get<PokemonListResponse>("https://pokeapi.co/api/v2/pokemon?limit=20");
     return response.data;
 }
 
