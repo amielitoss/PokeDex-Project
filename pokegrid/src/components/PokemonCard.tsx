@@ -16,14 +16,17 @@ function PokemonCard({ pokemon }: PokemonCardProps) {
       </div>
 
       <div className="pokemon-card-content">
-        <span>#{pokemon.id}</span>
+        <span>#{String(pokemon.id).padStart(3, "0")}</span>
         <h3>{pokemon.name}</h3>
         <div className="pokemon-card-types">
-            {pokemon.types.map((typeInfo) => (
-                <span key={typeInfo.slot}>
-                    {typeInfo.type.name}
-                </span>
-            ))}
+          {pokemon.types.map((typeInfo) => (
+            <span
+              className={`type-badge type-${typeInfo.type.name}`}
+              key={typeInfo.slot}
+            >
+              {typeInfo.type.name}
+            </span>
+          ))}
         </div>
       </div>
     </article>
