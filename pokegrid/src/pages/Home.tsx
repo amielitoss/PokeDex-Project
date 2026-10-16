@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import pokemonApi from "../services/pokemonApi";
+import pokemonApi, { getPokemonBySearch } from "../services/pokemonApi";
 import Hero from "../components/Hero";
 import PokemonCard from "../components/PokemonCard";
 import { getPokemonList } from "../services/pokemonApi";
@@ -16,10 +16,14 @@ function Home() {
   const [pokemonDetails, setPokemonDetails] = useState<Pokemon[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPokemon, setTotalPokemon] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResult, setSearchResult] = useState<Pokemon | null>(null);
 
   const offset = (currentPage - 1) * PAGE_SIZE;
   const totalPages = Math.ceil(totalPokemon / PAGE_SIZE);
   const gridRef = useRef<HTMLElement | null>(null);
+
+  const displayedPokemon = searchResult ? [searchResult] : pokemonDetails;
 
   useEffect(() => {
     async function loadFeaturedPokemon() {
@@ -57,6 +61,31 @@ function Home() {
     loadPokemon();
   }, [offset]);
 
+  async function handleSearch() {
+    setError(null);
+    
+    if (searchTerm.trim() === "") {
+      setSearchResult(null);
+      return;
+    }
+
+    try {
+      const data = await getPokemonBySearch(searchTerm);
+      setSearchResult(data);
+    } catch (error) {
+      console.error(error);
+      setError("Failed to load Pokémon");
+    }
+  }
+
+  function handleSearchChange(value: string) {
+    setSearchTerm(value);
+
+    if (value.trim() === "") {
+      setSearchResult(null);
+      setError(null);
+    }
+  }
 
   function nextPage() {
     setCurrentPage((prev) => prev + 1);
@@ -78,7 +107,12 @@ function Home() {
     <>
       {pokemon && (
         <div>
-          <Hero pokemon={pokemon} />
+          <Hero
+            pokemon={pokemon}
+            searchTerm={searchTerm}
+            onSearchChange={handleSearchChange}
+            onSearch={handleSearch}
+          />
         </div>
       )}
 
@@ -92,7 +126,7 @@ function Home() {
         </div>
 
         <div className="pokemon-grid">
-          {pokemonDetails.map((pokemon) => (
+          {displayedPokemon.map((pokemon) => (
             <PokemonCard key={pokemon.id} pokemon={pokemon} />
           ))}
         </div>
@@ -106,11 +140,11 @@ function Home() {
             Previous
           </button>
           <p>Page {currentPage}</p>
-          <button 
-            type="button" 
+          <button
+            type="button"
             onClick={nextPage}
             disabled={currentPage === totalPages}
-            >
+          >
             Next
           </button>
         </div>

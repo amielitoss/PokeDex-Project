@@ -4,9 +4,12 @@ import "./Hero.css";
 
 type HeroProps = {
   pokemon: Pokemon;
+  searchTerm: string;
+  onSearchChange: (value: string) => void;
+  onSearch: () => void;
 };
 
-function Hero({ pokemon }: HeroProps) {
+function Hero({ pokemon, searchTerm, onSearchChange, onSearch }: HeroProps) {
   const [isCrying, setIsCrying] = useState(false);
 
   function playCry() {
@@ -40,6 +43,13 @@ function Hero({ pokemon }: HeroProps) {
               type="text"
               placeholder="Search Pokémon..."
               aria-label="Search Pokémon"
+              value={searchTerm}
+              onChange={(event) => onSearchChange(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  onSearch();
+                }
+              }}
             />
           </div>
         </div>

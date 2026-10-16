@@ -11,4 +11,10 @@ export async function getPokemonList(offset: number, pageSize: number): Promise<
     return response.data;
 }
 
+export async function getPokemonBySearch(search: string): Promise<Pokemon> {
+    const normalizedSearch = search.trim().toLowerCase();
+    const response = await axios.get<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${normalizedSearch}`)
+    return response.data;
+}
+
 export default pokemonApi;
