@@ -159,6 +159,63 @@
   font-weight: 700;
 }
 
+.pokemon-grid-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.pokemon-grid-controls span {
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  opacity: 0.6;
+}
+
+.pokemon-grid-controls select {
+  min-height: 42px;
+  padding: 0 0.85rem;
+
+  border: 1px solid var(--border-primary);
+  border-radius: 10px;
+
+  background: var(--surface-primary);
+  color: var(--text-primary);
+
+  font-size: 0.9rem;
+  font-weight: 600;
+
+  cursor: pointer;
+  outline: none;
+
+  transition:
+    background-color var(--transition-speed) ease,
+    color var(--transition-speed) ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.pokemon-grid-controls select:hover {
+  border-color: var(--accent-color);
+}
+
+.pokemon-grid-controls select:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(255, 48, 79, 0.12);
+}
+
+@media (max-width: 700px) {
+  .pokemon-grid-controls {
+    width: 100%;
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .pokemon-grid-controls select {
+    width: 100%;
+  }
+}
+
 @media (max-width: 480px) {
   .pagination {
     gap: 0.75rem;

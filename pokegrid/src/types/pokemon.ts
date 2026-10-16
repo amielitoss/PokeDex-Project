@@ -49,3 +49,13 @@ export type PokemonListResponse = {
     results: PokemonListItem[];
     count: number;
 };
+
+export type PokemonTypeResponse = {
+  pokemon: {
+    pokemon: {
+      name: string;
+      url: string;
+    };
+    slot: number;
+  }[];
+};

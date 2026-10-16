@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import pokemonApi, { getPokemonBySearch } from "../services/pokemonApi";
 import Hero from "../components/Hero";
 import PokemonCard from "../components/PokemonCard";
-import { getPokemonList } from "../services/pokemonApi";
+import { getPokemonList, getPokemonByType } from "../services/pokemonApi";
 import type { Pokemon } from "../types/pokemon";
 import axios from "axios";
 import "./Home.css";
@@ -18,6 +18,8 @@ function Home() {
   const [totalPokemon, setTotalPokemon] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResult, setSearchResult] = useState<Pokemon | null>(null);
+
+  const [selectedType, setSelectedType] = useState("all");
 
   const offset = (currentPage - 1) * PAGE_SIZE;
   const totalPages = Math.ceil(totalPokemon / PAGE_SIZE);
@@ -43,6 +45,27 @@ function Home() {
       setLoading(true);
       setError(null);
       try {
+        if (selectedType !== "all") {
+          const typeData = await getPokemonByType(selectedType);
+
+          const paginatedTypePokemon = typeData.pokemon.slice(
+            offset,
+            offset + PAGE_SIZE,
+          );
+
+          const detailRequests = paginatedTypePokemon.map((item) => {
+            return axios.get<Pokemon>(item.pokemon.url);
+          });
+
+          const detailResponses = await Promise.all(detailRequests);
+
+          const details = detailResponses.map((response) => response.data);
+
+          setTotalPokemon(typeData.pokemon.length);
+          setPokemonDetails(details);
+
+          return;
+        }
         const listData = await getPokemonList(offset, PAGE_SIZE);
         const detailRequests = listData.results.map((item) => {
           return axios.get<Pokemon>(item.url);
@@ -59,11 +82,11 @@ function Home() {
       }
     }
     loadPokemon();
-  }, [offset]);
+  }, [offset, selectedType]);
 
   async function handleSearch() {
     setError(null);
-    
+
     if (searchTerm.trim() === "") {
       setSearchResult(null);
       return;
@@ -86,6 +109,11 @@ function Home() {
       setError(null);
     }
   }
+
+  function handleTypeChange(value: string) {
+  setSelectedType(value);
+  setCurrentPage(1);
+}
 
   function nextPage() {
     setCurrentPage((prev) => prev + 1);
@@ -122,7 +150,33 @@ function Home() {
             <p>Explore the Pokédex</p>
             <h2>All Pokémon</h2>
           </div>
-          <span>{totalPokemon} Pokémon</span>
+          <div className="pokemon-grid-controls">
+            <span>{totalPokemon} Pokémon</span>
+            <select
+              value={selectedType}
+              onChange={(event) => handleTypeChange(event.target.value)}
+            >
+              <option value="all">All types</option>
+              <option value="normal">Normal</option>
+              <option value="fire">Fire</option>
+              <option value="water">Water</option>
+              <option value="electric">Electric</option>
+              <option value="grass">Grass</option>
+              <option value="ice">Ice</option>
+              <option value="fighting">Fighting</option>
+              <option value="poison">Poison</option>
+              <option value="ground">Ground</option>
+              <option value="flying">Flying</option>
+              <option value="psychic">Psychic</option>
+              <option value="bug">Bug</option>
+              <option value="rock">Rock</option>
+              <option value="ghost">Ghost</option>
+              <option value="dragon">Dragon</option>
+              <option value="dark">Dark</option>
+              <option value="steel">Steel</option>
+              <option value="fairy">Fairy</option>
+            </select>
+          </div>
         </div>
 
         <div className="pokemon-grid">

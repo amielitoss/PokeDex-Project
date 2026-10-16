@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Pokemon, PokemonListResponse } from "../types/pokemon";
+import type { Pokemon, PokemonListResponse, PokemonTypeResponse } from "../types/pokemon";
 
 async function pokemonApi(): Promise<Pokemon> {
     const response = await axios.get<Pokemon>("https://pokeapi.co/api/v2/pokemon/6");
@@ -15,6 +15,12 @@ export async function getPokemonBySearch(search: string): Promise<Pokemon> {
     const normalizedSearch = search.trim().toLowerCase();
     const response = await axios.get<Pokemon>(`https://pokeapi.co/api/v2/pokemon/${normalizedSearch}`)
     return response.data;
+}
+
+export async function getPokemonByType(type: string): Promise<PokemonTypeResponse> {
+  const normalizedType = type.trim().toLowerCase();  
+  const response = await axios.get<PokemonTypeResponse>(`https://pokeapi.co/api/v2/type/${normalizedType}`);
+  return response.data
 }
 
 export default pokemonApi;
