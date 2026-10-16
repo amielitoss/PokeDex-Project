@@ -33,6 +33,7 @@ function Home() {
   const [selectedGeneration, setSelectedGeneration] = useState("all");
   const [sortOption, setSortOption] = useState("number-asc");
   const sortedPokemon = [...displayedPokemon];
+  const [searchNotFound, setSearchNotFound] = useState(false);
 
   switch (sortOption) {
     case "number-asc":
@@ -178,8 +179,11 @@ function Home() {
     try {
       const data = await getPokemonBySearch(searchTerm);
       setSearchResult(data);
+      setSearchNotFound(false);
     } catch (error) {
       console.error(error);
+      setSearchResult(null);
+      setSearchNotFound(true);
       setError("Failed to load Pokémon");
     }
   }
@@ -190,6 +194,7 @@ function Home() {
     if (value.trim() === "") {
       setSearchResult(null);
       setError(null);
+      setSearchNotFound(false);
     }
   }
 
@@ -294,11 +299,18 @@ function Home() {
           </div>
         </div>
 
-        <div className="pokemon-grid">
-          {sortedPokemon.map((pokemon) => (
-            <PokemonCard key={pokemon.id} pokemon={pokemon} />
-          ))}
-        </div>
+        {searchNotFound || sortedPokemon.length === 0 ? (
+          <div className="empty-state">
+            <h3>No Pokémon found</h3>
+            <p>Try changing your filters or search.</p>
+          </div>
+        ) : (
+          <div className="pokemon-grid">
+            {sortedPokemon.map((pokemon) => (
+              <PokemonCard key={pokemon.id} pokemon={pokemon} />
+            ))}
+          </div>
+        )}
 
         <div className="pagination">
           <button

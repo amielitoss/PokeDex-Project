@@ -204,6 +204,32 @@
   box-shadow: 0 0 0 3px rgba(255, 48, 79, 0.12);
 }
 
+.empty-state {
+  padding: 3rem 1rem;
+  text-align: center;
+
+  border: 1px dashed var(--border-primary);
+  border-radius: 16px;
+
+  background: var(--surface-primary);
+}
+
+.empty-state h3 {
+  margin: 0 0 0.5rem;
+
+  color: var(--text-primary);
+
+  font-size: 1.35rem;
+}
+
+.empty-state p {
+  margin: 0;
+
+  color: var(--text-primary);
+
+  opacity: 0.6;
+}
+
 @media (max-width: 700px) {
   .pokemon-grid-controls {
     width: 100%;
