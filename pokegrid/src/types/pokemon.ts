@@ -59,3 +59,10 @@ export type PokemonTypeResponse = {
     slot: number;
   }[];
 };
+
+export type PokemonGenerationResponse = {
+  pokemon_species: {
+    name: string;
+    url: string;
+  }[];
+};

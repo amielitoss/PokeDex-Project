@@ -2,7 +2,11 @@ import { useEffect, useState, useRef } from "react";
 import pokemonApi, { getPokemonBySearch } from "../services/pokemonApi";
 import Hero from "../components/Hero";
 import PokemonCard from "../components/PokemonCard";
-import { getPokemonList, getPokemonByType } from "../services/pokemonApi";
+import {
+  getPokemonList,
+  getPokemonByType,
+  getPokemonByGeneration,
+} from "../services/pokemonApi";
 import type { Pokemon } from "../types/pokemon";
 import axios from "axios";
 import "./Home.css";
@@ -19,13 +23,42 @@ function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResult, setSearchResult] = useState<Pokemon | null>(null);
 
-  const [selectedType, setSelectedType] = useState("all");
-
   const offset = (currentPage - 1) * PAGE_SIZE;
   const totalPages = Math.ceil(totalPokemon / PAGE_SIZE);
   const gridRef = useRef<HTMLElement | null>(null);
 
   const displayedPokemon = searchResult ? [searchResult] : pokemonDetails;
+
+  const [selectedType, setSelectedType] = useState("all");
+  const [selectedGeneration, setSelectedGeneration] = useState("all");
+  const [sortOption, setSortOption] = useState("number-asc");
+  const sortedPokemon = [...displayedPokemon];
+
+  switch (sortOption) {
+    case "number-asc":
+      sortedPokemon.sort((a, b) => {
+        return a.id - b.id;
+      });
+      break;
+
+    case "number-desc":
+      sortedPokemon.sort((a, b) => {
+        return b.id - a.id;
+      });
+      break;
+
+    case "name-asc":
+      sortedPokemon.sort((a, b) => {
+        return a.name.localeCompare(b.name);
+      });
+      break;
+
+    case "name-desc":
+      sortedPokemon.sort((a, b) => {
+        return b.name.localeCompare(a.name);
+      });
+      break;
+  }
 
   useEffect(() => {
     async function loadFeaturedPokemon() {
@@ -45,6 +78,50 @@ function Home() {
       setLoading(true);
       setError(null);
       try {
+        // Generation selected
+        if (selectedGeneration !== "all") {
+          const generationData =
+            await getPokemonByGeneration(selectedGeneration);
+
+          let generationPokemon = generationData.pokemon_species;
+
+          // Generation + Type selected
+          if (selectedType !== "all") {
+            const typeData = await getPokemonByType(selectedType);
+
+            const typeNames = new Set(
+              typeData.pokemon.map((item) => item.pokemon.name),
+            );
+
+            generationPokemon = generationPokemon.filter((pokemon) =>
+              typeNames.has(pokemon.name),
+            );
+          }
+
+          const paginatedGenerationPokemon = generationPokemon.slice(
+            offset,
+            offset + PAGE_SIZE,
+          );
+
+          const detailRequests = paginatedGenerationPokemon.map((item) => {
+            const pokemonId = item.url.split("/").filter(Boolean).pop();
+
+            return axios.get<Pokemon>(
+              `https://pokeapi.co/api/v2/pokemon/${pokemonId}`,
+            );
+          });
+
+          const detailResponses = await Promise.all(detailRequests);
+
+          const details = detailResponses.map((response) => response.data);
+
+          setTotalPokemon(generationPokemon.length);
+          setPokemonDetails(details);
+
+          return;
+        }
+
+        // Type only
         if (selectedType !== "all") {
           const typeData = await getPokemonByType(selectedType);
 
@@ -66,12 +143,18 @@ function Home() {
 
           return;
         }
+
+        // No filters
         const listData = await getPokemonList(offset, PAGE_SIZE);
+
         const detailRequests = listData.results.map((item) => {
           return axios.get<Pokemon>(item.url);
         });
+
         const detailResponses = await Promise.all(detailRequests);
+
         const details = detailResponses.map((response) => response.data);
+
         setTotalPokemon(listData.count);
         setPokemonDetails(details);
       } catch (error) {
@@ -82,7 +165,7 @@ function Home() {
       }
     }
     loadPokemon();
-  }, [offset, selectedType]);
+  }, [offset, selectedType, selectedGeneration]);
 
   async function handleSearch() {
     setError(null);
@@ -110,10 +193,15 @@ function Home() {
     }
   }
 
+  function handleGenerationChange(value: string) {
+    setSelectedGeneration(value);
+    setCurrentPage(1);
+  }
+
   function handleTypeChange(value: string) {
-  setSelectedType(value);
-  setCurrentPage(1);
-}
+    setSelectedType(value);
+    setCurrentPage(1);
+  }
 
   function nextPage() {
     setCurrentPage((prev) => prev + 1);
@@ -152,6 +240,23 @@ function Home() {
           </div>
           <div className="pokemon-grid-controls">
             <span>{totalPokemon} Pokémon</span>
+
+            <select
+              value={selectedGeneration}
+              onChange={(event) => handleGenerationChange(event.target.value)}
+            >
+              <option value="all">All generations</option>
+              <option value="1">Generation I</option>
+              <option value="2">Generation II</option>
+              <option value="3">Generation III</option>
+              <option value="4">Generation IV</option>
+              <option value="5">Generation V</option>
+              <option value="6">Generation VI</option>
+              <option value="7">Generation VII</option>
+              <option value="8">Generation VIII</option>
+              <option value="9">Generation IX</option>
+            </select>
+
             <select
               value={selectedType}
               onChange={(event) => handleTypeChange(event.target.value)}
@@ -176,11 +281,21 @@ function Home() {
               <option value="steel">Steel</option>
               <option value="fairy">Fairy</option>
             </select>
+
+            <select
+              value={sortOption}
+              onChange={(event) => setSortOption(event.target.value)}
+            >
+              <option value="number-asc">Number: Low to High</option>
+              <option value="number-desc">Number: High to Low</option>
+              <option value="name-asc">Name: A to Z</option>
+              <option value="name-desc">Name: Z to A</option>
+            </select>
           </div>
         </div>
 
         <div className="pokemon-grid">
-          {displayedPokemon.map((pokemon) => (
+          {sortedPokemon.map((pokemon) => (
             <PokemonCard key={pokemon.id} pokemon={pokemon} />
           ))}
         </div>
