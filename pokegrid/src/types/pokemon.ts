@@ -31,8 +31,8 @@ export type Pokemon = {
     stat: {
       name: string;
       url: string;
-    }[];
-  };
+    };
+  }[];
   cries: {
     latest: string;
     legacy: string;
@@ -64,5 +64,15 @@ export type PokemonGenerationResponse = {
   pokemon_species: {
     name: string;
     url: string;
+  }[];
+};
+
+export type PokemonSpeciesResponse = {
+  flavor_text_entries: {
+    flavor_text: string;
+    language: {
+      name: string;
+      url: string;
+    };
   }[];
 };
