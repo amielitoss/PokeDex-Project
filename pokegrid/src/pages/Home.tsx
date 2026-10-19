@@ -10,6 +10,7 @@ import {
 import type { Pokemon } from "../types/pokemon";
 import axios from "axios";
 import "./Home.css";
+import "../components/Loading.css";
 
 const PAGE_SIZE = 21;
 

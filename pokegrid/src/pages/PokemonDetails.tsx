@@ -5,17 +5,22 @@ import { getPokemonBySearch } from "../services/pokemonApi";
 import type { PokemonSpeciesResponse } from "../types/pokemon";
 import { getPokemonBySpecies } from "../services/pokemonApi";
 import "./PokemonDetails.css";
+import "../components/Loading.css";
 
 function PokemonDetails() {
   const { id } = useParams();
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
   const [isCrying, setIsCrying] = useState(false);
   const [species, setSpecies] = useState<PokemonSpeciesResponse | null>(null);
-  const englishDescription = species?.flavor_text_entries.find((entry) => entry.language.name === "en");
+  const englishDescription = species?.flavor_text_entries.find(
+    (entry) => entry.language.name === "en",
+  );
   const cleanDescription = englishDescription?.flavor_text.replace(
-  /[\n\f]/g,
-  " ",
-);
+    /[\n\f]/g,
+    " ",
+  );
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   function playCry() {
     if (!pokemon || isCrying) {
@@ -36,20 +41,35 @@ function PokemonDetails() {
   useEffect(() => {
     async function loadPokemonDetails() {
       if (!id) return;
-      const data = await getPokemonBySearch(id);
-      setPokemon(data);
-      const speciesData = await getPokemonBySpecies(id);
-      setSpecies(speciesData);
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await getPokemonBySearch(id);
+        setPokemon(data);
+        const speciesData = await getPokemonBySpecies(id);
+        setSpecies(speciesData);
+      } catch (error) {
+        console.error(error);
+        setError("Failed to load Pokémon");
+      } finally {
+        setLoading(false);
+      }
     }
-
     loadPokemonDetails();
   }, [id]);
 
-
-
   return (
     <>
-      {pokemon && (
+      {loading && (
+        <div className="loading-state">
+          <div className="pokeball-loader"></div>
+          <p>Loading Pokémon...</p>
+        </div>
+      )}
+
+      {error && <p>{error}</p>}
+
+      {!loading && !error && pokemon && (
         <div className="pokemon-details-page">
           <div className="pokemon-details-main">
             <div className="pokemon-details-card">
@@ -100,12 +120,12 @@ function PokemonDetails() {
             </div>
 
             <div className="pokemon-details-info">
-                {englishDescription &&  (
-                    <div className="pokemon-description">
-                        <h2>Description</h2>
-                        <p>{cleanDescription}</p>
-                    </div>
-                )}
+              {englishDescription && (
+                <div className="pokemon-description">
+                  <h2>Description</h2>
+                  <p>{cleanDescription}</p>
+                </div>
+              )}
               <div className="pokemon-abilities">
                 <h2>Abilities</h2>
 
