@@ -22,6 +22,8 @@ function PokemonDetails() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [weaknesses, setWeaknesses] = useState<string[]>([]);
+  const [resistance, setResistance] = useState<string[]>([]);
+  const [immunity, setImmunity] = useState<string[]>([]);
 
   function playCry() {
     if (!pokemon || isCrying) {
@@ -53,13 +55,45 @@ function PokemonDetails() {
           return getPokemonByType(typeInfo.type.name);
         });
         const typeData = await Promise.all(typeRequests);
-        const weaknesses = typeData
-          .map((type) => type.damage_relations.double_damage_from)
-          .flat();
-        const weaknessNames = weaknesses.map((weakness) => weakness.name);
-        const weaknessTypes = new Set(weaknessNames);
-        const uniqueWeaknesses = Array.from(weaknessTypes);
-        setWeaknesses(uniqueWeaknesses);
+
+        //damage multipliers
+        const damageMultipliers: Record<string, number> = {};
+        typeData.forEach((type) => {
+          type.damage_relations.double_damage_from.forEach((damageType) => {
+            damageMultipliers[damageType.name] =
+              (damageMultipliers[damageType.name] ?? 1) * 2;
+          });
+
+          type.damage_relations.half_damage_from.forEach((damageType) => {
+            damageMultipliers[damageType.name] =
+              (damageMultipliers[damageType.name] ?? 1) * 0.5;
+          });
+
+          type.damage_relations.no_damage_from.forEach((damageType) => {
+            damageMultipliers[damageType.name] = 0;
+          });
+        });
+
+        // weakness entries
+        const weaknessEntries = Object.entries(damageMultipliers).filter(
+          ([, multiplier]) => multiplier > 1,
+        );
+        const finalWeaknesses = weaknessEntries.map(([typeName]) => typeName);
+        setWeaknesses(finalWeaknesses);
+
+        // resistance entries
+        const resistanceEntries = Object.entries(damageMultipliers).filter(
+          ([, multiplier]) => multiplier > 0 && multiplier < 1,
+        );
+        const finalResistance = resistanceEntries.map(([typeName]) => typeName);
+        setResistance(finalResistance);
+
+        // immunity entries
+        const immunityEntries = Object.entries(damageMultipliers).filter(
+          ([, multiplier]) => multiplier === 0,
+        );
+        const finalImmunity = immunityEntries.map(([typeName]) => typeName);
+        setImmunity(finalImmunity);
       } catch (error) {
         console.error(error);
         setError("Failed to load Pokémon");
@@ -112,11 +146,40 @@ function PokemonDetails() {
               <div className="pokemon-weaknesses">
                 <h2>Weaknesses</h2>
                 {weaknesses.map((weakness) => (
-                  <span className={`type-badge type-${weakness}`} key={weakness}>{weakness}</span>
+                  <span
+                    className={`type-badge type-${weakness}`}
+                    key={weakness}
+                  >
+                    {weakness}
+                  </span>
                 ))}
               </div>
 
-              <div className="pokemon-resistances"></div>
+              <div className="pokemon-resistances">
+                <h2>Resistances</h2>
+                {resistance.map((resistance) => (
+                  <span
+                    className={`type-badge type-${resistance}`}
+                    key={resistance}
+                  >
+                    {resistance}
+                  </span>
+                ))}
+              </div>
+
+              {immunity.length > 0 && (
+                <div className="pokemon-immunities">
+                  <h2>Immunities</h2>
+                  {immunity.map((immunity) => (
+                    <span
+                      className={`type-badge type-${immunity}`}
+                      key={immunity}
+                    >
+                      {immunity}
+                    </span>
+                  ))}
+                </div>
+              )}
 
               <button
                 type="button"

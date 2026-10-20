@@ -281,18 +281,22 @@
   opacity: 0.75;
 }
 
-.pokemon-weaknesses {
+.pokemon-weaknesses,
+.pokemon-resistances,
+.pokemon-immunities {
   padding: 1.5rem;
   border: 1px solid var(--border-primary);
   border-radius: 18px;
+  margin-bottom: 1rem;
   background: var(--surface-primary);
-
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
 }
 
-.pokemon-weaknesses h2 {
+.pokemon-weaknesses h2,
+.pokemon-resistances h2,
+.pokemon-immunities h2 {
   width: 100%;
   margin: 0;
   color: var(--text-primary);
