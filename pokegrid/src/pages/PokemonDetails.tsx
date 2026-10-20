@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import type { Pokemon } from "../types/pokemon";
 import {
   getPokemonBySearch,
@@ -25,6 +25,8 @@ function getEvolutionNames(node: EvolutionChainNode): string[] {
 }
 
 function PokemonDetails() {
+  const navigate = useNavigate();
+
   const { id } = useParams();
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
   const [isCrying, setIsCrying] = useState(false);
@@ -147,6 +149,7 @@ function PokemonDetails() {
 
       {!loading && !error && pokemon && (
         <div className="pokemon-details-page">
+          <button className="back-button" onClick={() => navigate(-1)}>Back</button>
           <div className="pokemon-details-main">
             <div className="pokemon-details-card">
               <span className="pokemon-details-id">
