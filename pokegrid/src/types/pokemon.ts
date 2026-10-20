@@ -58,6 +58,7 @@ export type PokemonTypeResponse = {
     };
     slot: number;
   }[];
+    damage_relations: PokemonDamageRelations;
 };
 
 export type PokemonGenerationResponse = {
@@ -74,5 +75,20 @@ export type PokemonSpeciesResponse = {
       name: string;
       url: string;
     };
+  }[];
+};
+
+export type PokemonDamageRelations = {
+  double_damage_from: {
+    name: string;
+    url: string;
+  }[];
+  half_damage_from: {
+    name: string;
+    url: string;
+  }[];
+  no_damage_from: {
+    name: string;
+    url: string;
   }[];
 };

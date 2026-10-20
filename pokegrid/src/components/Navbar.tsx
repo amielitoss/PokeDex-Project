@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/PokeGrid-logo.webp";
 import { useState, useEffect } from "react";
 import { Sun, Moon, Menu, X } from "lucide-react";
@@ -19,14 +19,16 @@ function Navbar({ darkMode, toggleTheme }: NavbarProps) {
       document.body.style.overflow = "";
     }
     return () => {
-        document.body.style.overflow = "";
-    }
+      document.body.style.overflow = "";
+    };
   }, [menuOpen]);
 
   return (
     <nav>
       <div className="navbar-logo">
-        <img src={logo} alt="PokeGrid" />
+        <Link to="/">
+          <img src={logo} alt="PokeGrid" />
+        </Link>
       </div>
       <div className={`link-container ${menuOpen ? "is-open" : ""}`}>
         <NavLink
@@ -78,9 +80,11 @@ function Navbar({ darkMode, toggleTheme }: NavbarProps) {
 
         <button
           type="button"
-          aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-label={
+            menuOpen ? "Close navigation menu" : "Open navigation menu"
+          }
           className="menu-toggle"
-          onClick={() => setMenuOpen(prev => !prev)}
+          onClick={() => setMenuOpen((prev) => !prev)}
         >
           {menuOpen ? <X /> : <Menu />}
         </button>

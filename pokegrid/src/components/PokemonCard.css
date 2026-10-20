@@ -102,6 +102,15 @@
   text-transform: capitalize;
 }
 
+.pokemon-card-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.pokemon-card-link:visited {
+  color: inherit;
+}
+
 /* Pokémon type colors */
 
 .type-normal {

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import type { Pokemon } from "../types/pokemon";
-import { getPokemonBySearch } from "../services/pokemonApi";
+import { getPokemonBySearch, getPokemonByType } from "../services/pokemonApi";
 import type { PokemonSpeciesResponse } from "../types/pokemon";
 import { getPokemonBySpecies } from "../services/pokemonApi";
 import "./PokemonDetails.css";
@@ -21,6 +21,7 @@ function PokemonDetails() {
   );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [weaknesses, setWeaknesses] = useState<string[]>([]);
 
   function playCry() {
     if (!pokemon || isCrying) {
@@ -48,6 +49,17 @@ function PokemonDetails() {
         setPokemon(data);
         const speciesData = await getPokemonBySpecies(id);
         setSpecies(speciesData);
+        const typeRequests = data.types.map((typeInfo) => {
+          return getPokemonByType(typeInfo.type.name);
+        });
+        const typeData = await Promise.all(typeRequests);
+        const weaknesses = typeData
+          .map((type) => type.damage_relations.double_damage_from)
+          .flat();
+        const weaknessNames = weaknesses.map((weakness) => weakness.name);
+        const weaknessTypes = new Set(weaknessNames);
+        const uniqueWeaknesses = Array.from(weaknessTypes);
+        setWeaknesses(uniqueWeaknesses);
       } catch (error) {
         console.error(error);
         setError("Failed to load Pokémon");
@@ -96,6 +108,15 @@ function PokemonDetails() {
                   </span>
                 ))}
               </div>
+
+              <div className="pokemon-weaknesses">
+                <h2>Weaknesses</h2>
+                {weaknesses.map((weakness) => (
+                  <span className={`type-badge type-${weakness}`} key={weakness}>{weakness}</span>
+                ))}
+              </div>
+
+              <div className="pokemon-resistances"></div>
 
               <button
                 type="button"
