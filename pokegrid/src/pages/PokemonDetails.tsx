@@ -1,17 +1,35 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import type { Pokemon } from "../types/pokemon";
-import { getPokemonBySearch, getPokemonByType } from "../services/pokemonApi";
-import type { PokemonSpeciesResponse } from "../types/pokemon";
-import { getPokemonBySpecies } from "../services/pokemonApi";
+import {
+  getPokemonBySearch,
+  getPokemonByType,
+  getPokemonBySpecies,
+  getEvolutionChain,
+} from "../services/pokemonApi";
+import type {
+  PokemonSpeciesResponse,
+  EvolutionChainNode,
+} from "../types/pokemon";
 import "./PokemonDetails.css";
 import "../components/Loading.css";
+
+function getEvolutionNames(node: EvolutionChainNode): string[] {
+  const names = [node.species.name];
+
+  node.evolves_to.forEach((nextEvolution) => {
+    names.push(...getEvolutionNames(nextEvolution));
+  });
+
+  return names;
+}
 
 function PokemonDetails() {
   const { id } = useParams();
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
   const [isCrying, setIsCrying] = useState(false);
   const [species, setSpecies] = useState<PokemonSpeciesResponse | null>(null);
+  const [evolutionPokemon, setEvolutionPokemon] = useState<Pokemon[]>([]);
   const englishDescription = species?.flavor_text_entries.find(
     (entry) => entry.language.name === "en",
   );
@@ -51,6 +69,18 @@ function PokemonDetails() {
         setPokemon(data);
         const speciesData = await getPokemonBySpecies(id);
         setSpecies(speciesData);
+        const evoData = await getEvolutionChain(
+          speciesData.evolution_chain.url,
+        );
+        const evoNames = getEvolutionNames(evoData.chain);
+        const evolutionRequests = evoNames.map((name) =>
+          getPokemonBySearch(name),
+        );
+
+        const evolutionData = await Promise.all(evolutionRequests);
+
+        setEvolutionPokemon(evolutionData);
+
         const typeRequests = data.types.map((typeInfo) => {
           return getPokemonByType(typeInfo.type.name);
         });
@@ -240,6 +270,27 @@ function PokemonDetails() {
                       ></div>
                     </div>
                   </div>
+                ))}
+              </div>
+              <div className="pokemon-evolutions">
+                <h2>Evolution Chain</h2>
+
+                {evolutionPokemon.map((evoPokemon) => (
+                  <Link
+                    key={evoPokemon.id}
+                    to={`/pokemon/${evoPokemon.id}`}
+                    className="evolution-link"
+                  >
+                    <img
+                      src={
+                        evoPokemon.sprites.other["official-artwork"]
+                          .front_default
+                      }
+                      alt={evoPokemon.name}
+                    />
+
+                    <span>{evoPokemon.name}</span>
+                  </Link>
                 ))}
               </div>
             </div>

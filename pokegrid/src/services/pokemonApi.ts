@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Pokemon, PokemonGenerationResponse, PokemonListResponse, PokemonSpeciesResponse, PokemonTypeResponse } from "../types/pokemon";
+import type { Pokemon, PokemonEvolutionResponse, PokemonGenerationResponse, PokemonListResponse, PokemonSpeciesResponse, PokemonTypeResponse } from "../types/pokemon";
 
 async function pokemonApi(): Promise<Pokemon> {
     const response = await axios.get<Pokemon>("https://pokeapi.co/api/v2/pokemon/6");
@@ -31,7 +31,12 @@ export async function getPokemonByGeneration(generation: string): Promise<Pokemo
 
 export async function getPokemonBySpecies(id: string): Promise<PokemonSpeciesResponse> {
     const response = await axios.get(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
-    return response.data
+    return response.data;
+}
+
+export async function getEvolutionChain(url: string): Promise<PokemonEvolutionResponse> {
+    const response = await axios.get<PokemonEvolutionResponse>(url);
+    return response.data;
 }
 
 export default pokemonApi;

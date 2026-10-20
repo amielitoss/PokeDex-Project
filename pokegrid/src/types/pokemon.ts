@@ -76,6 +76,9 @@ export type PokemonSpeciesResponse = {
       url: string;
     };
   }[];
+  evolution_chain: {
+  url: string;
+};
 };
 
 export type PokemonDamageRelations = {
@@ -91,4 +94,16 @@ export type PokemonDamageRelations = {
     name: string;
     url: string;
   }[];
+};
+
+export type EvolutionChainNode = {
+  species: {
+    name: string;
+    url: string;
+  };
+  evolves_to: EvolutionChainNode[];
+};
+
+export type PokemonEvolutionResponse = {
+  chain: EvolutionChainNode;
 };

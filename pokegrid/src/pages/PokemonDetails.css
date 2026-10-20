@@ -303,6 +303,71 @@
   font-size: 1.35rem;
 }
 
+.pokemon-evolutions {
+  padding: 1.5rem;
+  border: 1px solid var(--border-primary);
+  border-radius: 18px;
+  background: var(--surface-primary);
+}
+
+.pokemon-evolutions h2 {
+  margin: 0 0 1rem;
+  color: var(--text-primary);
+  font-size: 1.35rem;
+}
+
+.pokemon-evolutions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.pokemon-evolutions h2 {
+  width: 100%;
+}
+
+.evolution-link {
+  flex: 1;
+  min-width: 120px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+
+  padding: 1rem;
+
+  border: 1px solid var(--border-primary);
+  border-radius: 14px;
+
+  background: var(--surface-secondary);
+
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: capitalize;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.evolution-link:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-color);
+}
+
+.evolution-link:focus-visible {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 3px;
+}
+
+.evolution-link img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
 @media (max-width: 850px) {
   .pokemon-details-main {
     grid-template-columns: 1fr;
