@@ -1,22 +1,22 @@
-.abilities-page {
+.ability-page {
   width: min(1180px, calc(100% - 2rem));
   margin: 0 auto;
   padding: 3rem 0 5rem;
 }
 
-.abilities-page h1 {
+.ability-page h1 {
   margin-bottom: 1.5rem;
   color: var(--text-primary);
   font-size: 2rem;
 }
 
-.abilities-grid {
+.ability-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 1rem;
 }
 
-.abilities-card {
+.ability-card {
   padding: 1rem 1.2rem;
 
   border: 1px solid var(--border-primary);
@@ -34,24 +34,24 @@
     background-color var(--transition-speed) ease;
 }
 
-.abilities-card:hover {
+.ability-card:hover {
   transform: translateY(-2px);
   border-color: var(--accent-color);
 }
 
 @media (max-width: 600px) {
-  .abilities-page {
+  .ability-page {
     width: min(100% - 1rem, 1180px);
     padding: 2rem 0 4rem;
   }
 
-  .abilities-grid {
+  .ability-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 420px) {
-  .abilities-grid {
+  .ability-grid {
     grid-template-columns: 1fr;
   }
 }

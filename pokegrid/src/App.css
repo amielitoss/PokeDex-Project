@@ -53,3 +53,13 @@
     background-color var(--transition-speed) ease,
     color var(--transition-speed) ease;
 }
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-content {
+  flex: 1;
+}
