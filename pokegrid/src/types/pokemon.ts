@@ -107,3 +107,35 @@ export type EvolutionChainNode = {
 export type PokemonEvolutionResponse = {
   chain: EvolutionChainNode;
 };
+
+export type MoveListResponse = {
+    count: number;
+  results: {
+    name: string;
+    url: string;
+  }[];
+}
+
+export type AbilityListResponse = {
+  count: number;
+  results: {
+    name: string;
+    url: string;
+  }[];
+};
+
+export type TypeListResponse = {
+  count: number;
+  results: {
+    name: string;
+    url: string;
+  }[];
+};
+
+export type ItemListResponse = {
+  count: number;
+  results: {
+    name: string;
+    url: string;
+  }[];
+};
