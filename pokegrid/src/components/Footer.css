@@ -1,13 +1,15 @@
 .footer {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
+
   gap: 1rem;
 
   padding: 1.5rem 2rem;
   margin-top: 3rem;
 
   border-top: 1px solid #e5e7eb;
+
   font-size: 0.9rem;
 }
 
@@ -17,7 +19,12 @@
 
 .footer-links {
   display: flex;
+  align-items: center;
+  justify-content: center;
+
   gap: 0.75rem;
+
+  grid-column: 2;
 }
 
 .footer-links a {
@@ -26,7 +33,9 @@
   justify-content: center;
 
   color: inherit;
-  padding: 0.4rem;
+
+  padding: 0.45rem;
+
   border-radius: 8px;
 
   transition:
@@ -50,7 +59,11 @@
 
 @media (max-width: 600px) {
   .footer {
+    display: flex;
     flex-direction: column;
+
     text-align: center;
+
+    padding-bottom: 5rem;
   }
 }
