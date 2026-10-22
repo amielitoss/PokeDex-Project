@@ -28,8 +28,11 @@ function PokemonControls({
         <span>{totalPokemon} Pokémon</span>
 
         <select
+          aria-label="Filter Pokémon by generation"
           value={selectedGeneration}
-          onChange={(event) => onGenerationChange(event.target.value)}
+          onChange={(event) =>
+            onGenerationChange(event.target.value)
+          }
         >
           <option value="all">All generations</option>
           <option value="1">Generation I</option>
@@ -44,8 +47,11 @@ function PokemonControls({
         </select>
 
         <select
+          aria-label="Filter Pokémon by type"
           value={selectedType}
-          onChange={(event) => onTypeChange(event.target.value)}
+          onChange={(event) =>
+            onTypeChange(event.target.value)
+          }
         >
           <option value="all">All types</option>
           <option value="normal">Normal</option>
@@ -69,13 +75,24 @@ function PokemonControls({
         </select>
 
         <select
+          aria-label="Sort Pokémon"
           value={sortOption}
-          onChange={(event) => onSortChange(event.target.value)}
+          onChange={(event) =>
+            onSortChange(event.target.value)
+          }
         >
-          <option value="number-asc">Number: Low to High</option>
-          <option value="number-desc">Number: High to Low</option>
-          <option value="name-asc">Name: A to Z</option>
-          <option value="name-desc">Name: Z to A</option>
+          <option value="number-asc">
+            Number: Low to High
+          </option>
+          <option value="number-desc">
+            Number: High to Low
+          </option>
+          <option value="name-asc">
+            Name: A to Z
+          </option>
+          <option value="name-desc">
+            Name: Z to A
+          </option>
         </select>
       </div>
     </div>

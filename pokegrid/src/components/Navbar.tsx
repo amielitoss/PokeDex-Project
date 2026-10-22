@@ -1,5 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
-import logo from "../assets/PokeGrid-logo.webp";
+import logo from "../assets/PokeGrid-small-logo.webp";
 import { useState, useEffect } from "react";
 import { Sun, Moon, Menu, X } from "lucide-react";
 import "./Navbar.css";

@@ -4,6 +4,7 @@ export type Pokemon = {
   height: number;
   weight: number;
   sprites: {
+    front_default: string;
     other: {
       "official-artwork": {
         front_default: string;
@@ -39,15 +40,14 @@ export type Pokemon = {
   };
 };
 
-
 export type PokemonListItem = {
-    name: string;
-    url: string;
+  name: string;
+  url: string;
 };
 
 export type PokemonListResponse = {
-    results: PokemonListItem[];
-    count: number;
+  results: PokemonListItem[];
+  count: number;
 };
 
 export type PokemonTypeResponse = {
@@ -58,7 +58,7 @@ export type PokemonTypeResponse = {
     };
     slot: number;
   }[];
-    damage_relations: PokemonDamageRelations;
+  damage_relations: PokemonDamageRelations;
 };
 
 export type PokemonGenerationResponse = {
@@ -77,8 +77,8 @@ export type PokemonSpeciesResponse = {
     };
   }[];
   evolution_chain: {
-  url: string;
-};
+    url: string;
+  };
 };
 
 export type PokemonDamageRelations = {
@@ -109,12 +109,12 @@ export type PokemonEvolutionResponse = {
 };
 
 export type MoveListResponse = {
-    count: number;
+  count: number;
   results: {
     name: string;
     url: string;
   }[];
-}
+};
 
 export type AbilityListResponse = {
   count: number;
@@ -139,4 +139,3 @@ export type ItemListResponse = {
     url: string;
   }[];
 };
-

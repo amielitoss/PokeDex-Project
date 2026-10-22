@@ -9,7 +9,12 @@ type HeroProps = {
   onSearch: () => void;
 };
 
-function Hero({ pokemon, searchTerm, onSearchChange, onSearch }: HeroProps) {
+function Hero({
+  pokemon,
+  searchTerm,
+  onSearchChange,
+  onSearch,
+}: HeroProps) {
   const [isCrying, setIsCrying] = useState(false);
 
   function playCry() {
@@ -19,10 +24,13 @@ function Hero({ pokemon, searchTerm, onSearchChange, onSearch }: HeroProps) {
 
     const cry = new Audio(pokemon.cries.latest);
     cry.volume = 0.15;
+
     setIsCrying(true);
+
     cry.onended = () => {
       setIsCrying(false);
     };
+
     cry.play().catch(() => {
       setIsCrying(false);
     });
@@ -32,19 +40,26 @@ function Hero({ pokemon, searchTerm, onSearchChange, onSearch }: HeroProps) {
     <section className="section-hero">
       <div className="hero-inner">
         <div className="hero-content">
-          <p className="hero-eyebrow">Discover your next favorite Pokémon</p>
-          <h1>Meet {pokemon.name}</h1>
-          <p className="hero-description">
-            Explore Pokémon, compare their stats, discover abilities, types, and
-            evolution paths.
+          <p className="hero-eyebrow">
+            Discover your next favorite Pokémon
           </p>
+
+          <h1>Meet {pokemon.name}</h1>
+
+          <p className="hero-description">
+            Explore Pokémon, compare their stats, discover
+            abilities, types, and evolution paths.
+          </p>
+
           <div className="hero-search">
             <input
               type="text"
               placeholder="Search Pokémon..."
               aria-label="Search Pokémon"
               value={searchTerm}
-              onChange={(event) => onSearchChange(event.target.value)}
+              onChange={(event) =>
+                onSearchChange(event.target.value)
+              }
               onKeyDown={(event) => {
                 if (event.key === "Enter") {
                   onSearch();
@@ -53,11 +68,19 @@ function Hero({ pokemon, searchTerm, onSearchChange, onSearch }: HeroProps) {
             />
           </div>
         </div>
+
         <div className="hero-image">
           <button type="button" onClick={playCry}>
             <img
-              src={pokemon.sprites.other["official-artwork"].front_default}
+              src={
+                pokemon.sprites.other["official-artwork"]
+                  .front_default
+              }
               alt={pokemon.name}
+              width="280"
+              height="280"
+              loading="eager"
+              fetchPriority="high"
             />
           </button>
         </div>

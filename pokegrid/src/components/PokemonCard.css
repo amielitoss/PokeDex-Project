@@ -94,7 +94,7 @@
 
   border-radius: 999px;
 
-  color: #fff;
+  color: #ffffff;
 
   font-size: 0.78rem;
   font-weight: 700;
@@ -115,14 +115,17 @@
 
 .type-normal {
   background: #a8a77a;
+  color: #111827;
 }
 
 .type-fire {
   background: #ee8130;
+  color: #111827;
 }
 
 .type-water {
   background: #6390f0;
+  color: #111827;
 }
 
 .type-electric {
@@ -132,6 +135,7 @@
 
 .type-grass {
   background: #7ac74c;
+  color: #111827;
 }
 
 .type-ice {
@@ -154,6 +158,7 @@
 
 .type-flying {
   background: #a98ff3;
+  color: #111827;
 }
 
 .type-psychic {
@@ -162,6 +167,7 @@
 
 .type-bug {
   background: #a6b91a;
+  color: #111827;
 }
 
 .type-rock {
